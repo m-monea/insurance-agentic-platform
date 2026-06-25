@@ -1,0 +1,32 @@
+### Lista clienti
+GET http://localhost:8082/api/clienti
+
+### Crea cliente
+POST http://localhost:8082/api/clienti
+Content-Type: application/json
+
+{
+  "nome": "Luca",
+  "cognome": "Verdi",
+  "email": "luca.verdi@example.com",
+  "telefono": "+39 333 444 5555",
+  "numeroPolizza": "POL-AUTO-003"
+}
+
+### Lista sinistri
+GET http://localhost:8081/api/sinistri
+
+### Crea sinistro
+POST http://localhost:8081/api/sinistri
+Content-Type: application/json
+
+{
+  "clienteId": 1,
+  "tipo": "AUTO",
+  "descrizione": "Tamponamento con danno al paraurti posteriore.",
+  "documentiPresenti": "foto danno, denuncia",
+  "importoStimato": 1200
+}
+
+### Analizza sinistro con agente AI
+POST http://localhost:8083/api/agente/analizza/1

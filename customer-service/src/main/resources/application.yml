@@ -1,0 +1,13 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/insurance_db}
+    username: ${SPRING_DATASOURCE_USERNAME:insurance_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:insurance_password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true

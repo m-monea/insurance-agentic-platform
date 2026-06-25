@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: insurance-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-insurance_db}
+      POSTGRES_USER: ${POSTGRES_USER:-insurance_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-insurance_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docs/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-insurance_user} -d ${POSTGRES_DB:-insurance_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  customer-service:
+    build: ./customer-service
+    container_name: insurance-customer-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-insurance_db}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-insurance_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-insurance_password}
+    ports:
+      - "8082:8082"
+
+  claim-service:
+    build: ./claim-service
+    container_name: insurance-claim-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-insurance_db}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-insurance_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-insurance_password}
+    ports:
+      - "8081:8081"
+
+  ai-agent-service:
+    build: ./ai-agent-service
+    container_name: insurance-ai-agent-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+      claim-service:
+        condition: service_started
+      customer-service:
+        condition: service_started
+    environment:
+      CLAIM_SERVICE_URL: http://claim-service:8081
+      CUSTOMER_SERVICE_URL: http://customer-service:8082
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-insurance_db}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-insurance_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-insurance_password}
+      OLLAMA_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: llama3.2
+    ports:
+      - "8083:8083"
+
+  frontend-angular:
+    build: ./frontend-angular
+    container_name: insurance-frontend-angular
+    depends_on:
+      - claim-service
+      - customer-service
+      - ai-agent-service
+    ports:
+      - "4200:80"
+
+volumes:
+  postgres_data:
