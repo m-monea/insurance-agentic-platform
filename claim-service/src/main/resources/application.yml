@@ -1,16 +1,12 @@
 server:
-  port: 8081
-
+  port: ${PORT:8081}
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/insurance}
-    username: ${SPRING_DATASOURCE_USERNAME:insurance}
-    password: ${SPRING_DATASOURCE_PASSWORD:insurance}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/insurance_db}
+    username: ${SPRING_DATASOURCE_USERNAME:insurance_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:insurance_password}
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
     open-in-view: false
