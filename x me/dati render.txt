@@ -1,6 +1,0 @@
-Internal Database URL postgresql://insurance_user:hC5FYmiikj7rcIOaGRQmlQnBgz3sn7O6@dpg-d8uq8hflk1mc7387nuo0-a/insurance_db_tnud
-Username insurance_user
-Password hC5FYmiikj7rcIOaGRQmlQnBgz3sn7O6
-Database insurance_db_tnud
-Host dpg-d8uq8hflk1mc7387nuo0-a
-Port 5432
