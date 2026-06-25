@@ -1,284 +1,269 @@
 # Insurance Agentic Platform
 
-Una piattaforma dimostrativa di gestione sinistri assicurativi basata su architettura a microservizi, con un agente AI locale che supporta l'operatore nell'analisi dei sinistri.
+An AI-powered insurance claims management platform built with **Java 21**, **Spring Boot**, **Angular 18**, **PostgreSQL**, **Docker**, and **Ollama (Llama 3.2)**.
 
-Il progetto è stato sviluppato come portfolio per mostrare competenze in Java, Spring Boot, Angular, Docker, PostgreSQL e AI generativa.
+The project demonstrates a modern microservices architecture where an AI agent assists insurance operators in analyzing claims, identifying missing information, estimating claim priority, and generating detailed reports.
 
 ---
 
-# Architettura
+# Screenshots
+
+> *(Coming soon after deployment)*
+
+---
+
+# Features
+
+## Customer Management
+
+- Create customers
+- View customer list
+- Delete customers
+
+## Claim Management
+
+- Create insurance claims
+- View all claims
+- Delete claims
+- Estimate claim amount
+- Upload claim documents (ready for extension)
+
+## AI Agent
+
+- AI analysis using **Ollama + Llama 3.2**
+- Automatic report generation
+- Missing information detection
+- Suggested documents
+- Priority estimation
+- AI analysis history stored in PostgreSQL
+- Delete analysis history
+
+## Dashboard
+
+- Customer statistics
+- Claims statistics
+- Total estimated amount
+- AI reports
+
+---
+
+# Architecture
 
 ```
                 +----------------------+
                 |  Angular Frontend    |
-                |      Port 4200       |
                 +----------+-----------+
                            |
+               REST APIs
                            |
-          -------------------------------------
-          |                 |                 |
-          |                 |                 |
-+---------v------+ +--------v-------+ +-------v-------+
-| Claim Service  | | CustomerService| | AI Agent      |
-| Spring Boot    | | Spring Boot    | | Spring Boot   |
-| Port 8081      | | Port 8082      | | Port 8083     |
-+--------+-------+ +--------+-------+ +-------+-------+
-         |                  |                 |
-         +------------------+-----------------+
-                            |
-                    PostgreSQL 16
-                      Port 5432
-                            |
-                         Ollama
-                   Llama 3.2 Local AI
+        +------------------+------------------+
+        |                                     |
++--------------------+              +--------------------+
+| Customer Service   |              | Claim Service      |
++--------------------+              +--------------------+
+        |                                     |
+        +------------------+------------------+
+                           |
+                  PostgreSQL Database
+                           |
+                    +----------------+
+                    | AI Agent       |
+                    | Spring Boot    |
+                    | Ollama Llama3  |
+                    +----------------+
 ```
 
 ---
 
-# Tecnologie
+# Tech Stack
 
-Backend
+## Backend
 
 - Java 21
-- Spring Boot 3.3
+- Spring Boot 3
 - Spring Web
-- Spring WebFlux
 - Spring Data JPA
 - PostgreSQL
-- Maven
 
-Frontend
+## Frontend
 
 - Angular 18
-- Standalone Components
 - TypeScript
-- HTML
 - CSS
 
-AI
+## AI
 
 - Ollama
 - Llama 3.2
-- Prompt Engineering
 
-DevOps
+## DevOps
 
 - Docker
 - Docker Compose
+- GitHub Actions
 
 ---
 
-# Funzionalità
-
-## Gestione clienti
-
-- elenco clienti
-- recupero cliente
-- integrazione REST
-
-## Gestione sinistri
-
-- creazione sinistro
-- ricerca sinistro
-- validazione dati
-
-## Agente AI
-
-Analizza automaticamente:
-
-- completezza del sinistro
-- documentazione presente
-- documenti mancanti
-- priorità
-- report finale
-
-Il motore AI utilizza:
-
-- Ollama
-- Llama 3.2
-
-con fallback automatico all'analisi locale nel caso in cui il modello non sia disponibile.
-
----
-
-# Storico Analisi AI
-
-Ogni analisi viene salvata nel database.
-
-Sono disponibili:
-
-- elenco analisi
-- ricerca storico per sinistro
-- eliminazione singola analisi
-- eliminazione completa dello storico
-
----
-
-# Dashboard
-
-La dashboard Angular permette di:
-
-- creare un nuovo sinistro
-- analizzare un sinistro
-- visualizzare clienti
-- consultare lo storico
-- eliminare analisi
-- visualizzare badge di priorità
-- leggere il report AI
-
----
-
-# API
-
-## Claim Service
+# Project Structure
 
 ```
-GET    /api/sinistri
-GET    /api/sinistri/{id}
-POST   /api/sinistri
+insurance-agentic-platform
+│
+├── ai-agent-service
+├── claim-service
+├── customer-service
+├── frontend-angular
+├── docs
+├── docker-compose.yml
+└── README.md
 ```
 
 ---
 
-## Customer Service
+# Getting Started
 
-```
-GET    /api/clienti
-GET    /api/clienti/{id}
-```
-
----
-
-## AI Agent
-
-```
-POST   /api/agente/analizza/{id}
-
-GET    /api/agente/storico
-
-GET    /api/agente/storico/{sinistroId}
-
-DELETE /api/agente/storico/{id}
-
-DELETE /api/agente/storico
-```
-
----
-
-# Avvio
-
-## Clonare il repository
+## Clone repository
 
 ```bash
-git clone https://github.com/TUO_USERNAME/insurance-agentic-platform.git
-```
+git clone https://github.com/m-monea/insurance-agentic-platform.git
 
-```
 cd insurance-agentic-platform
 ```
 
 ---
 
-## Avviare Ollama
-
-Installare Ollama
-
-https://ollama.com
-
-Scaricare il modello
-
-```bash
-ollama pull llama3.2
-```
-
-Avviare
+## Start Ollama
 
 ```bash
 ollama serve
 ```
 
+Download the model:
+
+```bash
+ollama pull llama3.2
+```
+
 ---
 
-## Avvio piattaforma
+## Start PostgreSQL and services
 
 ```bash
 docker compose up --build
 ```
 
----
+or
 
-# URL
-
-Frontend
-
-```
-http://localhost:4200
-```
-
-Claim Service
-
-```
-http://localhost:8081
-```
-
-Customer Service
-
-```
-http://localhost:8082
-```
-
-AI Agent
-
-```
-http://localhost:8083
+```bash
+docker compose up -d
 ```
 
 ---
 
-# Screenshot
+## Start Angular (development)
 
-Da aggiungere:
+```bash
+cd frontend-angular
 
+npm install
+
+ng serve
+```
+
+---
+
+# Services
+
+| Service | URL |
+
+| Frontend | http://localhost:4200 |
+| Claim Service | http://localhost:8081 |
+| Customer Service | http://localhost:8082 |
+| AI Agent | http://localhost:8083 |
+| Ollama | http://localhost:11434 |
+
+---
+
+# AI Workflow
+
+1. Create a customer
+2. Create a claim
+3. Open AI Analysis
+4. Select claim
+5. AI retrieves:
+
+- customer
+- claim
+- estimated amount
+- available documents
+
+6. AI generates
+
+- summary
+- missing information
+- suggested documents
+- priority
+- final report
+
+7. Analysis is stored in PostgreSQL.
+
+---
+
+# Current Status
+
+## Completed
+
+- Microservices architecture
+- Angular frontend
+- Customer CRUD
+- Claim CRUD
+- Delete customers
+- Delete claims
 - Dashboard
-- Analisi AI
-- Storico
-- Docker Containers
+- AI local analysis
+- Ollama integration
+- AI history
+- Delete AI history
+- PostgreSQL persistence
+- Docker
+- Docker Compose
+- GitHub
+- GitHub Actions CI
 
 ---
 
-# Roadmap
+## In Progress
+
+- PDF report generation
+- JWT Authentication
+- Document upload
+- Remote deployment
+- Automated tests
+
+---
+
+# CI/CD
+
+Every push automatically runs:
+
+- Maven Build
+- Maven Verify
+- Angular Build
+- Docker Image Build
+
+using **GitHub Actions**.
+
+---
+
+# Future Improvements
 
 - JWT Authentication
-- Dashboard statistiche
-- Grafici
-- Ricerca avanzata
-- Upload documenti
-- PDF Report
-- OCR documenti
-- RAG con documentazione assicurativa
-- AI multi-agent
-- Deploy cloud
-- HTTPS
-- Dominio pubblico
-
----
-
-# Struttura progetto
-
-```
-insurance-agentic-platform/
-
-frontend-angular/
-
-claim-service/
-
-customer-service/
-
-ai-agent-service/
-
-docs/
-
-docker-compose.yml
-```
-
----
+- Role-based authorization
+- PDF reports
+- File uploads
+- OpenAPI / Swagger
+- Kubernetes deployment
+- Monitoring (Prometheus + Grafana)
+- Redis cache
+- AI model switching
+- RAG with company documents
