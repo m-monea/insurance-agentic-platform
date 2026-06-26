@@ -97,6 +97,16 @@ public class AgenteController {
     public List<AnalisiAi> storicoPerSinistro(@PathVariable Long sinistroId) {
         return analisiAiRepository.findBySinistroIdOrderByCreataIlDesc(sinistroId);
     }
+    
+    @GetMapping("/debug/config")
+    public Map<String, String> debugConfig() {
+    Map<String, String> config = new HashMap<>();
+    config.put("claimUrl", claimUrl);
+    config.put("customerUrl", customerUrl);
+    config.put("ollamaUrl", ollamaUrl);
+    config.put("modelloOllama", modelloOllama);
+    return config;
+}
 
     @DeleteMapping("/storico/{id}")
     public ResponseEntity<Void> eliminaAnalisi(@PathVariable Long id) {
