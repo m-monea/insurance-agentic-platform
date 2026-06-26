@@ -1,19 +1,19 @@
 server:
-  port: 8083
+  port: ${PORT:8083}
 
 servizi:
-  claim-url: ${CLAIM_SERVICE_URL:http://localhost:8081}
-  customer-url: ${CUSTOMER_SERVICE_URL:http://localhost:8082}
+  claim-url: ${CLAIM_SERVICE_URL:https://insurance-claim-service.onrender.com}
+  customer-url: ${CUSTOMER_SERVICE_URL:https://insurance-customer-service.onrender.com}
 
 ollama:
-  url: ${OLLAMA_URL:http://host.docker.internal:11434}
+  url: ${OLLAMA_URL:http://localhost:11434}
   model: ${OLLAMA_MODEL:llama3.2}
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/insurance}
-    username: ${SPRING_DATASOURCE_USERNAME:insurance}
-    password: ${SPRING_DATASOURCE_PASSWORD:insurance}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/insurance_db}
+    username: ${SPRING_DATASOURCE_USERNAME:insurance_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:insurance_password}
   jpa:
     hibernate:
       ddl-auto: update
