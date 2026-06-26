@@ -1,35 +1,32 @@
-server:
+sserver:
   port: ${PORT:8080}
 
 spring:
   cloud:
     gateway:
+      httpclient:
+        connect-timeout: 10000
+        response-timeout: 60s
+
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins:
-              - "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders:
-              - "*"
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
 
       routes:
         - id: customer-service
-          uri: ${CUSTOMER_SERVICE_URL:http://localhost:8082}
+          uri: ${CUSTOMER_SERVICE_URL:https://insurance-customer-service.onrender.com}
           predicates:
             - Path=/api/clienti/**
 
         - id: claim-service
-          uri: ${CLAIM_SERVICE_URL:http://localhost:8081}
+          uri: ${CLAIM_SERVICE_URL:https://insurance-claim-service.onrender.com}
           predicates:
             - Path=/api/sinistri/**
 
         - id: ai-agent-service
-          uri: ${AI_AGENT_SERVICE_URL:http://localhost:8083}
+          uri: ${AI_AGENT_SERVICE_URL:https://insurance-ai-agent-service.onrender.com}
           predicates:
             - Path=/api/agente/**
