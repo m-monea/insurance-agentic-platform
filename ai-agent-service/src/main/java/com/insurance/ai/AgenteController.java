@@ -32,8 +32,8 @@ public class AgenteController {
 
     public AgenteController(
             WebClient.Builder builder,
-            @Value("${servizi.claim-url}") String claimUrl,
-            @Value("${servizi.customer-url}") String customerUrl,
+            @Value("${CLAIM_SERVICE_URL:https://insurance-claim-service.onrender.com}") String claimUrl,
+            @Value("${CUSTOMER_SERVICE_URL:https://insurance-customer-service.onrender.com}") String customerUrl,
             @Value("${ollama.url:http://host.docker.internal:11434}") String ollamaUrl,
             @Value("${ollama.model:llama3.2}") String modelloOllama,
             AnalisiAiRepository analisiAiRepository) {
