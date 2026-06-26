@@ -1,0 +1,35 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+
+      routes:
+        - id: customer-service
+          uri: ${CUSTOMER_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/clienti/**
+
+        - id: claim-service
+          uri: ${CLAIM_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/sinistri/**
+
+        - id: ai-agent-service
+          uri: ${AI_AGENT_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/agente/**
